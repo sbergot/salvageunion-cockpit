@@ -1,17 +1,12 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./components/ui/card";
-import { Block, BlockField } from "./components/ui/block";
+  Block,
+  BlockField,
+  BlockStat,
+  BlockStatTp,
+} from "./components/ui/block";
 import { Children, Pilot } from "./types";
-import { getSubLens, useImmerLocalStorage } from "./lib/hooks";
+import { useImmerLocalStorage } from "./lib/hooks";
 import { newPilot } from "./lib";
-
-const re = /(.*?): (.*)/;
 
 function Title({ children }: Children) {
   return (
@@ -21,29 +16,63 @@ function Title({ children }: Children) {
   );
 }
 
-function Roller() {
-  const pilotLens = useImmerLocalStorage<Pilot>("pilot", newPilot())
+function PilotSheet() {
+  const pilotLens = useImmerLocalStorage<Pilot>("pilot", newPilot());
   return (
     <div className="m-4 flex flex-col gap-4 items-start">
       <Header />
-      <Card>
-        <CardHeader>
-          <CardTitle>title</CardTitle>
-          <CardDescription>description bla bla</CardDescription>
-        </CardHeader>
-        <CardContent>
-          content content content contentcontent content content content
-        </CardContent>
-        <CardFooter>footer</CardFooter>
-      </Card>
-      <Block>
-        <div className="grid grid-cols-2 gap-2">
-          <BlockField title="Callsign" value="foo bar" />
-          <BlockField title="Motto" value="foo bar" usedLens={pilotLens.sub("motto").sub("used")} />
-          <BlockField title="Class" value="foo bar" />
-          <BlockField title="Keepsake" value="foo bar" usedLens={pilotLens.sub("keepsake").sub("used")} />
-          <BlockField title="Appearance" value="foo bar" />
-          <BlockField title="Background" value="foo bar" usedLens={pilotLens.sub("background").sub("used")} />
+      <div className="flex gap-1">
+        <div className="uppercase text-vertical text-8xl text-sared-200">
+          Pilot
+        </div>
+        <Block className="grid grid-cols-2 gap-2">
+          <BlockField title="Callsign" value={pilotLens.state.callSign} />
+          <BlockField
+            title="Motto"
+            value={pilotLens.state.motto.value}
+            usedLens={pilotLens.sub("motto").sub("used")}
+          />
+          <BlockField title="Class" value={pilotLens.state.class} />
+          <BlockField
+            title="Keepsake"
+            value={pilotLens.state.keepsake.value}
+            usedLens={pilotLens.sub("keepsake").sub("used")}
+          />
+          <BlockField title="Appearance" value={pilotLens.state.appearance} />
+          <BlockField
+            title="Background"
+            value={pilotLens.state.background.value}
+            usedLens={pilotLens.sub("background").sub("used")}
+          />
+        </Block>
+        <Block className="flex flex-col gap-1">
+          <BlockStat
+            title="HP"
+            valueLens={pilotLens.sub("hp").sub("value")}
+            max={pilotLens.state.hp.max}
+          />
+          <BlockStat
+            title="AP"
+            valueLens={pilotLens.sub("ap").sub("value")}
+            max={pilotLens.state.ap.max}
+          />
+          <BlockStatTp
+            title="TP"
+            valueLens={pilotLens.sub("tp").sub("value")}
+          />
+        </Block>
+      </div>
+      <Block className="flex flex-col">
+        <div>Inventory</div>
+        <div className="grid grid-cols-3 bg-neutral-100 rounded-xl inventory-grid">
+          {pilotLens.state.inventory.map((v, i) => (
+            <textarea
+              key={i}
+              className="w-52 h-20 resize-none outline-none p-2 text-black text-sm"
+              value={pilotLens.state.inventory[i]}
+              onChange={(e) => pilotLens.sub("inventory").sub(i).setState(() => e.target.value)}
+            />
+          ))}
         </div>
       </Block>
     </div>
@@ -53,7 +82,7 @@ function Roller() {
 function Header() {
   return (
     <div className="self-start">
-      <Title>Salvage Union Roller</Title>
+      <Title>Salvage Union Pilot Sheet</Title>
       <div>
         Salvage Union is published by Leyline Press -{" "}
         <a href="https://leyline.press/">https://leyline.press/</a>
@@ -64,8 +93,8 @@ function Header() {
 
 function App() {
   return (
-    <div className="w-full max-w-3xl m-auto">
-      <Roller />
+    <div className="w-full max-w-5xl m-auto">
+      <PilotSheet />
     </div>
   );
 }

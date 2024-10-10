@@ -20,11 +20,16 @@ export function roll(table: RollTable): RollResult {
 
 export function newPilot(): Pilot {
   return {
-    callSign: "",
-    class: "",
-    appearance: "",
-    motto: { value: "", used: false },
-    keepsake: { value: "", used: false },
-    background: { value: "", used: false },
+    callSign: "call",
+    class: "class",
+    appearance: "app",
+    motto: { value: "motto", used: false },
+    keepsake: { value: "keep", used: false },
+    background: { value: "back", used: false },
+    hp: { value: 0, max: 6 },
+    ap: { value: 0, max: 6 },
+    tp: { value: 0 },
+    inventory: ["", "", "", "", "", ""],
+    abilities: []
   }
 }
