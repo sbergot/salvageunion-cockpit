@@ -39,11 +39,11 @@ function Roller() {
       <Block>
         <div className="grid grid-cols-2 gap-2">
           <BlockField title="Callsign" value="foo bar" />
-          <BlockField title="Motto" value="foo bar" usedLens={getSubLens(getSubLens(pilotLens, "motto"), "used")} />
+          <BlockField title="Motto" value="foo bar" usedLens={pilotLens.sub("motto").sub("used")} />
           <BlockField title="Class" value="foo bar" />
-          <BlockField title="Keepsake" value="foo bar" usedLens={getSubLens(getSubLens(pilotLens, "keepsake"), "used")} />
+          <BlockField title="Keepsake" value="foo bar" usedLens={pilotLens.sub("keepsake").sub("used")} />
           <BlockField title="Appearance" value="foo bar" />
-          <BlockField title="Background" value="foo bar" usedLens={getSubLens(getSubLens(pilotLens, "background"), "used")} />
+          <BlockField title="Background" value="foo bar" usedLens={pilotLens.sub("background").sub("used")} />
         </div>
       </Block>
     </div>

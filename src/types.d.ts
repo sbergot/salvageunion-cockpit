@@ -2,7 +2,7 @@ import { Draft } from "immer";
 
 export interface Pilot {
   callSign: string;
-  "class": string;
+  class: string;
   appearance: string;
   motto: PilotUsable;
   keepsake: PilotUsable;
@@ -15,16 +15,16 @@ export interface PilotUsable {
 }
 
 export interface RollTable {
-  "1": string
-  "20": string
-  "11-19": string
-  "6-10": string
-  "2-5": string
+  "1": string;
+  "20": string;
+  "11-19": string;
+  "6-10": string;
+  "2-5": string;
 }
 
 export interface RollResult {
-  value: number,
-  text: string
+  value: number;
+  text: string;
 }
 
 export interface Children {
@@ -35,9 +35,13 @@ export interface ClassName {
   className?: string;
 }
 
-export interface ILens<T> {
+export interface ILensBase<T> {
   state: T;
   setState: Setter<T>;
 }
 
-export type Setter<T> = (r: (d: Draft<T>) => Draft<T> | T | void) => void
+export interface ILens<T> extends ILensBase<T> {
+  sub<K extends keyof T>(key: K): ILens<T[K]>;
+}
+
+export type Setter<T> = (r: (d: Draft<T>) => Draft<T> | T | void) => void;

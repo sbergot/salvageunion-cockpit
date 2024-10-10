@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "./checkbox"
-import { ILens } from "@/types"
+import { ILensBase } from "@/types"
 
 
 
@@ -26,7 +26,7 @@ export interface BlockFieldProps
   asChild?: boolean;
   title: string;
   value: string;
-  usedLens?: ILens<boolean>;
+  usedLens?: ILensBase<boolean>;
 }
 
 const BlockField = React.forwardRef<

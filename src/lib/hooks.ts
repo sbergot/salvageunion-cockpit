@@ -3,7 +3,7 @@ import { uuidv4 } from "./utils";
 import useLocalStorage from "use-local-storage";
 import { Draft, produce } from "immer";
 import { useImmer } from "use-immer";
-import { ILens } from "../types";
+import { ILens, ILensBase } from "../types";
 
 export function useBrowserId(): string {
   return useMemo(() => {
@@ -30,18 +30,18 @@ export function useImmerLocalStorage<T>(
       produce<T>(oldVal ?? defaultValue, (d) => recipe(d))
     );
   }
-  return { state: value, setState: setImmerValue };
+  return makeLens({ state: value, setState: setImmerValue });
 }
 
-export function useLens<T>(defaultValue: T): ILens<T> {
+export function useLens<T>(defaultValue: T): ILensBase<T> {
   const [state, setState] = useImmer(defaultValue);
   return { state, setState };
 }
 
 export function getSubLens<T, K extends keyof T>(
-  lens: ILens<T>,
+  lens: ILensBase<T>,
   key: K
-): ILens<T[K]> {
+): ILensBase<T[K]> {
   return {
     state: lens.state[key],
     setState: (recipe) => lens.setState((d) => {
@@ -53,10 +53,20 @@ export function getSubLens<T, K extends keyof T>(
   };
 }
 
+export function makeLens<T>(lensBase: ILensBase<T>): ILens<T> {
+  return {
+    ...lensBase,
+    sub<K extends keyof T>(key: K): ILens<T[K]> {
+      const base = getSubLens(lensBase, key);
+      return makeLens(base);
+    }
+  }
+}
+
 export function getSubRecordLens<T>(
-  lens: ILens<Record<string, T>>,
+  lens: ILensBase<Record<string, T>>,
   key: string
-): ILens<T> {
+): ILensBase<T> {
   return {
     state: lens.state[key],
     setState: (recipe) => lens.setState((d) => {
