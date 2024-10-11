@@ -1,7 +1,7 @@
 export const pilot_json: string = `
 {
   "abilityIds": [
-    "Hacking Kit"
+    "Well actually..."
   ],
   "appearance": "Cute",
   "background": "Prodigy",

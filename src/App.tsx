@@ -7,7 +7,7 @@ import {
 } from "./components/ui/block";
 import { Ability, Children, ILens, Pilot } from "./types";
 import { useImmerLocalStorage } from "./lib/hooks";
-import { importPilot, newPilot } from "./lib";
+import { importPilot } from "./lib";
 import { pilot_json } from "./test_sb";
 
 function Title({ children }: Children) {
@@ -66,7 +66,7 @@ function PilotInventory({ inventoryLens }: { inventoryLens: ILens<string[]> }) {
     <Block className="flex flex-col">
       <BlockLabel>Inventory</BlockLabel>
       <div className="grid grid-cols-3 bg-neutral-100 rounded-xl inventory-grid">
-        {inventoryLens.state.map((v, i) => (
+        {inventoryLens.state.map((_, i) => (
           <textarea
             key={i}
             className="w-52 h-20 resize-none outline-none p-2 text-black text-sm"
@@ -91,9 +91,14 @@ function PilotAbilities({
       <BlockLabel>Abilities</BlockLabel>
       <div className="grid grid-cols-3 gap-2">
         {abilitiesLens.state.map((ability) => (
-          <div className="flex flex-col gap-1">
-            <div className="bg-neutral-100 rounded-xl text-black p-2">{ability.name}</div>
-            <div className="bg-neutral-100 rounded-xl text-black p-2">{ability.description}</div>
+          <div className="flex flex-col gap-1" key={ability.name}>
+            <div className="bg-neutral-100 rounded-xl text-black p-2">
+              {ability.name}
+            </div>
+            <div className="bg-neutral-100 rounded-xl text-black p-2">
+              {ability.description}
+              <div className="text-sm">{ability.effect}</div>
+            </div>
           </div>
         ))}
       </div>

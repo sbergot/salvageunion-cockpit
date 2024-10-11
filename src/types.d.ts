@@ -29,6 +29,7 @@ export interface Pilot {
 export interface Ability {
   name: string;
   description: string;
+  effect: string;
   apCost: number;
   range?: Range
   actionType: ActionType;
