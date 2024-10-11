@@ -131,7 +131,7 @@ function AbilityRoll({
     >
       <DialogTrigger asChild>
         <Button className="bg-neutral-100" size="fit">
-          <DicesIcon />
+          <DicesIcon size="20" />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -146,7 +146,7 @@ function PilotAbility({ ability }: { ability: Ability }) {
   const apCost = ability.apCost === "Variable" ? "X" : ability.apCost;
   return (
     <div className="flex flex-col gap-1" key={ability.name}>
-      <BlockSection className="flex justify-between">
+      <BlockSection className="flex justify-between text-sm">
         {ability.name}{" "}
         {ability.rollTable && (
           <AbilityRoll name={ability.name} rollTable={ability.rollTable} />
