@@ -13,6 +13,7 @@ export interface WorkShopPilot {
 }
 
 export interface Pilot {
+  id: string;
   callsign: string;
   class: string;
   appearance: string;

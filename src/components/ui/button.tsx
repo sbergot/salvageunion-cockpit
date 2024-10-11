@@ -17,8 +17,8 @@ const buttonVariants = cva(
           "border border-neutral-200 bg-white hover:bg-neutral-100 hover:text-sablue-100",
         secondary:
           "bg-neutral-100 text-sablue-100 hover:bg-neutral-100/80",
-        ghost: "hover:bg-neutral-100 hover:text-sablue-100",
-        link: "text-sablue-100 underline-offset-4 hover:underline",
+        ghost: "hover:bg-neutral-100 hover:text-sablue-200",
+        link: "text-sablue-200 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",

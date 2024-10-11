@@ -1,6 +1,3 @@
-import { importPilot, roll } from "@/lib";
-import { useImmerLocalStorage } from "@/lib/hooks";
-import { pilot_json } from "@/test_sb";
 import { ILens, Pilot, Ability, RollResult, RollTable } from "@/types";
 import { Block, BlockLabel, BlockSection } from "../ui/block";
 import { PilotField, PilotStat, PilotStatTp } from "./pilot-sheet-ui";
@@ -13,8 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { roll } from "@/lib";
 
-function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
+export function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
   return (
     <div className="flex gap-1 justify-between w-full">
       <div className="uppercase text-vertical text-8xl text-sared-200">
@@ -57,7 +55,7 @@ function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
   );
 }
 
-function PilotInventory({ inventoryLens }: { inventoryLens: ILens<string[]> }) {
+export function PilotInventory({ inventoryLens }: { inventoryLens: ILens<string[]> }) {
   return (
     <Block className="flex flex-col">
       <BlockLabel>Inventory</BlockLabel>
@@ -170,7 +168,7 @@ function PilotAbility({ ability }: { ability: Ability }) {
   );
 }
 
-function PilotAbilities({
+export function PilotAbilities({
   abilitiesLens,
 }: {
   abilitiesLens: ILens<Ability[]>;
@@ -184,19 +182,5 @@ function PilotAbilities({
         ))}
       </div>
     </Block>
-  );
-}
-
-export function PilotSheet() {
-  const pilotLens = useImmerLocalStorage<Pilot>(
-    "pilot",
-    importPilot(pilot_json)
-  );
-  return (
-    <div className="flex flex-col gap-2">
-      <PilotStats pilotLens={pilotLens} />
-      <PilotInventory inventoryLens={pilotLens.sub("inventory")} />
-      <PilotAbilities abilitiesLens={pilotLens.sub("abilities")} />
-    </div>
   );
 }

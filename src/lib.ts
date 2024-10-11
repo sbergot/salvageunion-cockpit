@@ -1,5 +1,6 @@
 import { RollTable, RollResult, Pilot, WorkShopPilot, Ability } from "./types";
 import abilities from "./data/abilities.json";
+import { uuidv4 } from "./lib/utils";
 
 function toDictionary<T>(rows: T[], select: (r: T) => string): Record<string, T> {
   const result: Record<string, T> = {};
@@ -31,6 +32,7 @@ export function roll(table: RollTable): RollResult {
 
 export function newPilot(): Pilot {
   return {
+    id: uuidv4(),
     callsign: "call",
     class: "class",
     appearance: "app",
@@ -55,6 +57,7 @@ export function importPilot(json: string): Pilot {
   const abilities: Ability[] = workshopPilot.abilityIds.map(a => abilitiesByName[a]);
 
   return {
+    id: uuidv4(),
     callsign: workshopPilot.callsign,
     class: workshopPilot.coreClassId,
     appearance: workshopPilot.appearance,
@@ -67,4 +70,29 @@ export function importPilot(json: string): Pilot {
     inventory: gears,
     abilities: abilities    
   }
+}
+
+export function download(storageKey: string) {
+  const filename = `${storageKey}.json`;
+  const text = localStorage[storageKey];
+  downLoadText(filename, text);
+}
+
+export function downloadJson(name: string, data: object) {
+  const filename = `${name}.json`;
+  const text = JSON.stringify(data, null, 2);
+  downLoadText(filename, text);
+}
+
+function downLoadText(filename: string, text: string) {
+  const element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+  element.style.display = "none";
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
