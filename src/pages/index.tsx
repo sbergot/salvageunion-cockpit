@@ -12,10 +12,15 @@ export default function Index() {
   const pilotsLens = useImmerLocalStorage<Record<string, Pilot>>("pilots", {});
   return (
     <div className="flex flex-col gap-1">
-      <div className="text-sared-200 text-lg">Pilots</div>
+      <div className="text-lg">
+        To create a pilot, please visite{" "}
+        <a href="https://www.salvageunionworkshop.com/pilot">
+          https://www.salvageunionworkshop.com/pilot
+        </a>
+      </div>
       <div className="flex gap-1">
         <FileImport
-          label="import pilot"
+          label="import single pilot"
           onUpLoad={(content) => {
             pilotsLens.setState((pilots) => {
               const newPilot = importPilot(content);
@@ -25,15 +30,23 @@ export default function Index() {
         />
         <Button onClick={() => downloadJson("pilots", pilotsLens.state)}>
           <UploadIcon className="mr-2" />
-          export pilots
+          export all pilots
         </Button>
+        <FileImport
+          label="import all pilot"
+          onUpLoad={(content) => {
+            pilotsLens.setState(() => JSON.parse(content));
+          }}
+        />
       </div>
       {Object.values(pilotsLens.state).map((pilot) => (
         <div className="flex justify-between border-2 p-2 rounded-lg border-sared-100">
           <div className="text-lg">{pilot.callsign}</div>
           <div className="flex gap-2">
             <Link to="/pilot/:id" params={{ id: pilot.id }}>
-              <Button size="sm" variant="ghost" className="text-sared-100"><PlayIcon /></Button>
+              <Button size="sm" variant="ghost" className="text-sared-100">
+                <PlayIcon />
+              </Button>
             </Link>
             <DeleteAlert
               icon={
