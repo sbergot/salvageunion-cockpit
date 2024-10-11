@@ -19,6 +19,14 @@ const Block = React.forwardRef<
 ));
 Block.displayName = "Block";
 
+const BlockLabel = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("text-lg", className)} {...props} />
+));
+BlockLabel.displayName = "BlockLabel";
+
 export interface BlockFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   asChild?: boolean;
   title: string;
@@ -30,7 +38,7 @@ const BlockField = React.forwardRef<HTMLDivElement, BlockFieldProps>(
   ({ usedLens, title, value, className, ...props }, ref) => (
     <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
       <div className="flex justify-between">
-        <div className="text-lg">{title}</div>
+        <BlockLabel>{title}</BlockLabel>
         {usedLens !== undefined && (
           <div className="text-sm">
             Used{" "}
@@ -59,13 +67,13 @@ export interface BlockStatProps extends React.HTMLAttributes<HTMLDivElement> {
 const BlockStat = React.forwardRef<HTMLDivElement, BlockStatProps>(
   ({ title, valueLens, max, className, ...props }, ref) => (
     <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
-      <div className="text-lg self-center">{title}</div>
+      <BlockLabel className="text-center">{title}</BlockLabel>
       <div className="flex items-center">
         <div className="text-vertical text-sm text-neutral-100">Current</div>
-        <div className="rounded-xl flex bg-neutral-100">
+        <div className="rounded-xl flex justify-between bg-neutral-100">
           <input
             type="number"
-            className="rounded-xl bg-neutral-100 text-black py-2 pl-2 w-8 self-stretch outline-none"
+            className="rounded-xl bg-neutral-100 text-black py-2 px-1 w-8 self-stretch outline-none text-right"
             onChange={(e) => {
               valueLens.setState(() => parseInt(e.target.value));
             }}
@@ -90,8 +98,12 @@ export interface BlockStatTpProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const BlockStatTp = React.forwardRef<HTMLDivElement, BlockStatTpProps>(
   ({ title, valueLens, className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-1 items-center", className)} {...props}>
-      <div className="text-lg">{title}</div>
+    <div
+      ref={ref}
+      className={cn("flex flex-col gap-1 items-center", className)}
+      {...props}
+    >
+      <BlockLabel>{title}</BlockLabel>
       <input
         type="number"
         className="rounded-xl bg-neutral-100 text-black p-2 w-14 outline-none text-center"
@@ -105,4 +117,4 @@ const BlockStatTp = React.forwardRef<HTMLDivElement, BlockStatTpProps>(
 );
 BlockStatTp.displayName = "BlockStatTp";
 
-export { Block, BlockField, BlockStat, BlockStatTp };
+export { Block, BlockField, BlockStat, BlockStatTp, BlockLabel };

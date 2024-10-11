@@ -1,12 +1,14 @@
 import {
   Block,
   BlockField,
+  BlockLabel,
   BlockStat,
   BlockStatTp,
 } from "./components/ui/block";
 import { Children, Pilot } from "./types";
 import { useImmerLocalStorage } from "./lib/hooks";
-import { newPilot } from "./lib";
+import { importPilot, newPilot } from "./lib";
+import { pilot_json } from "./test_sb";
 
 function Title({ children }: Children) {
   return (
@@ -17,7 +19,7 @@ function Title({ children }: Children) {
 }
 
 function PilotSheet() {
-  const pilotLens = useImmerLocalStorage<Pilot>("pilot", newPilot());
+  const pilotLens = useImmerLocalStorage<Pilot>("pilot", importPilot(pilot_json));
   return (
     <div className="m-4 flex flex-col gap-4 items-start">
       <Header />
@@ -26,7 +28,7 @@ function PilotSheet() {
           Pilot
         </div>
         <Block className="grid grid-cols-2 gap-2">
-          <BlockField title="Callsign" value={pilotLens.state.callSign} />
+          <BlockField title="Callsign" value={pilotLens.state.callsign} />
           <BlockField
             title="Motto"
             value={pilotLens.state.motto.value}
@@ -63,7 +65,7 @@ function PilotSheet() {
         </Block>
       </div>
       <Block className="flex flex-col">
-        <div>Inventory</div>
+        <BlockLabel>Inventory</BlockLabel>
         <div className="grid grid-cols-3 bg-neutral-100 rounded-xl inventory-grid">
           {pilotLens.state.inventory.map((v, i) => (
             <textarea
@@ -82,7 +84,7 @@ function PilotSheet() {
 function Header() {
   return (
     <div className="self-start">
-      <Title>Salvage Union Pilot Sheet</Title>
+      <Title>Salvage Union Cockpit</Title>
       <div>
         Salvage Union is published by Leyline Press -{" "}
         <a href="https://leyline.press/">https://leyline.press/</a>

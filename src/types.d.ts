@@ -1,7 +1,19 @@
 import { Draft } from "immer";
 
+export interface WorkShopPilot {
+  coreClassId: string;
+  abilityIds: string[];
+  callsign: string;
+  appearance: string;
+  motto: string;
+  keepsake: string;
+  background: string;
+  ownedGear: { name: string }[];
+  trainingPoints: number;
+}
+
 export interface Pilot {
-  callSign: string;
+  callsign: string;
   class: string;
   appearance: string;
   motto: PilotUsable;
