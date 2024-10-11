@@ -1,7 +1,12 @@
 export const pilot_json: string = `
 {
   "abilityIds": [
-    "Well actually..."
+    "Well actually...",
+    "Trojan Horse",
+    "Trojan Horse",
+    "Trojan Horse",
+    "Denial of Service Attack",
+    "System and Software Hacker"
   ],
   "appearance": "Cute",
   "background": "Prodigy",

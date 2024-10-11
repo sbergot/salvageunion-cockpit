@@ -151,26 +151,33 @@
     ]
   },
   {
-    "name": "Systems and Software Hacker",
+    "name": "System and Software Hacker",
     "tree": "Hacking",
     "level": 2,
     "description": "Attempt to destroy Systems and Modules on target Mech.",
     "effect": "You attempt to hack into a System or Module in order to disable, damage, or destroy it in some way.",
-    "apCost": "Variable",
+    "apCost": 2,
     "range": "Medium",
     "actionType": "Turn",
     "traits": [
       {
         "type": "hacking"
       }
-    ]
+    ],
+    "rollTable": {
+      "20": "The System or Module is destroyed.",
+      "11-19": "The System or Module is damaged.",
+      "6-10": "The System or Module is inoperable and cannot be used until the end of the next turn.",
+      "2-5": "The hacking attempt fails.",
+      "1": "The hacking attempt fails and the target cannot be targeted by any Abilities with the Hacking Trait for the next 10 minutes."
+    }
   },
   {
     "name": "Denial of Service Attack",
     "tree": "Hacking",
     "level": 3,
     "description": "Attempt to Shutdown target Mech in Range.",
-    "effect": "This allows you to flood any number of Mechs or Vehicles in Close Range with numerous false signals, overwhelming them with so much information that they temporarily Shutdown.",
+    "effect": "This allows you to flood any number of Mechs or Vehicles in Close Range with numerous false signals, overwhelming them with so much information that they temporarily Shutdown. This costs 1 AP per Mech or Vehicle you target.",
     "apCost": "Variable",
     "range": "Medium",
     "actionType": "Turn",
@@ -178,7 +185,14 @@
       {
         "type": "hacking"
       }
-    ]
+    ],
+    "rollTable": {
+      "20": "All targets Shutdown for 10 minutes.",
+      "11-19": "All targets Shutdown for one round. They are active again at the end of their next turn.",
+      "6-10": "All targets must choose to either move or take an action during its next turn.",
+      "2-5": "The hacking attempt fails.",
+      "1": "All Mechs within Close Range of your Mech Shutdown for 10 minutes. This includes your Mech and those of any allies."
+    }
   },
   {
     "name": "Well actually...",
@@ -187,7 +201,14 @@
     "description": "Ask questions about Systems, Modules, or Technology.",
     "effect": "You can casually answer questions about Systems, Modules, Mechs, or technology even if you do not actually know the answer.",
     "apCost": 1,
-    "actionType": "Turn"
+    "actionType": "Turn",
+    "rollTable": {
+      "20": "You can ask the Mediator five questions about it and they must give you true answers.",
+      "11-19": "You can ask the Mediator three questions about it and they must give you true answers.",
+      "6-10": "You can ask the Mediator two questions about it. One of these answers must be true, but the other can be false.",
+      "2-5": "You do not actually know, and must make up a convincing answer to save your pride.",
+      "1": "You do not know the answer, and everyone realises this."
+    }
   },
   {
     "name": "Techno Babble",

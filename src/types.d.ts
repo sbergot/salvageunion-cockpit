@@ -30,10 +30,11 @@ export interface Ability {
   name: string;
   description: string;
   effect: string;
-  apCost: number;
+  apCost: number | "Variable";
   range?: Range
   actionType: ActionType;
   traits: Trait[];
+  rollTable?: RollTable;
 }
 
 export type Range = "Close" | "Medium" | "Long" | "Far" | "Close/Long";

@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-sablue-100 text-neutral-900 shadow hover:bg-sablue-200/90",
+          "bg-sablue-100 text-neutral-900 hover:bg-sablue-200/90",
         destructive:
-          "bg-red-500 text-neutral-50 shadow-sm hover:bg-red-500/90",
+          "bg-red-500 text-neutral-50 hover:bg-red-500/90",
         outline:
-          "border border-neutral-200 bg-white shadow-sm hover:bg-neutral-100 hover:text-sablue-100",
+          "border border-neutral-200 bg-white hover:bg-neutral-100 hover:text-sablue-100",
         secondary:
-          "bg-neutral-100 text-sablue-100 shadow-sm hover:bg-neutral-100/80",
+          "bg-neutral-100 text-sablue-100 hover:bg-neutral-100/80",
         ghost: "hover:bg-neutral-100 hover:text-sablue-100",
         link: "text-sablue-100 underline-offset-4 hover:underline",
       },
@@ -25,6 +25,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        fit: "",
       },
     },
     defaultVariants: {
