@@ -19,7 +19,7 @@ export default function Index() {
           https://www.salvageunionworkshop.com/pilot
         </a>
       </div>
-      <div className="flex gap-1">
+      <div className="flex flex-col md:flex-row gap-1">
         <FileImport
           label="import single pilot"
           onUpLoad={(content) => {
