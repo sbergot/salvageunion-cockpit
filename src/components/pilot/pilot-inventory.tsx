@@ -1,4 +1,4 @@
-import { ILens } from "@/lib/lens/lens";
+import { ILens } from "@/lib/lens";
 import { Block, BlockLabel, BlockSection } from "../ui/block";
 
 export function PilotInventory({

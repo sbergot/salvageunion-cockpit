@@ -1,5 +1,5 @@
 import { Pilot } from "@/lib/game-types";
-import { ILens, ILensBase } from "@/lib/lens/lens";
+import { ILens, ILensBase } from "@/lib/lens";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Block, BlockLabel, BlockSection } from "../ui/block";

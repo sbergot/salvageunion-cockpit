@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { ILens } from "@/lib/lens/lens";
+import { ILens } from "@/lib/lens";
 import { roll, RollResult, RollTable } from "@/lib/dices";
 import { Ability } from "@/lib/game-types";
 

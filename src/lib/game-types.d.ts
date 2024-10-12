@@ -27,6 +27,8 @@ export interface WorkShopPilot {
   
   export interface Ability {
     name: string;
+    tree: string;
+    level: number;
     description: string;
     effect: string;
     apCost: number | "Variable";

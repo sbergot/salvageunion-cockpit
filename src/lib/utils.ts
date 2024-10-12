@@ -15,3 +15,29 @@ export function uuidv4(): string {
       ).toString(16)
   );
 }
+
+export function toDictionary<T>(
+  rows: T[],
+  select: (r: T) => string
+): Record<string, T> {
+  const result: Record<string, T> = {};
+  rows.forEach((r) => {
+    result[select(r)] = r;
+  });
+  return result;
+}
+
+export function toDictionaryList<T>(
+  rows: T[],
+  select: (r: T) => string
+): Record<string, T[]> {
+  const result: Record<string, T[]> = {};
+  rows.forEach((r) => {
+    const key = select(r);
+    if (!result[key]) {
+      result[key] = [];
+    }
+    result[key].push(r);
+  });
+  return result;
+}
