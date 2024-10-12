@@ -14,7 +14,7 @@ export interface PilotFieldProps extends React.HTMLAttributes<HTMLDivElement> {
 const PilotField = React.forwardRef<HTMLDivElement, PilotFieldProps>(
   ({ usedLens, title, value, className, ...props }, ref) => (
     <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-baseline">
         <BlockLabel>{title}</BlockLabel>
         {usedLens !== undefined && (
           <div className="text-sm">
@@ -46,7 +46,7 @@ const PilotStat = React.forwardRef<HTMLDivElement, PilotStatProps>(
     <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
       <BlockLabel className="text-center">{title}</BlockLabel>
       <div className="flex items-center">
-        <div className="text-vertical text-sm text-neutral-100">Current</div>
+        <div className="[writing-mode:tb-rl] rotate-180 text-sm text-neutral-100">Current</div>
         <div className="rounded-xl flex justify-between bg-neutral-100">
           <input
             type="number"
@@ -60,7 +60,7 @@ const PilotStat = React.forwardRef<HTMLDivElement, PilotStatProps>(
             / {max}
           </BlockSection>
         </div>
-        <div className="text-vertical2 text-sm text-neutral-100">Max</div>
+        <div className="[writing-mode:tb-rl] text-sm text-neutral-100">Max</div>
       </div>
     </div>
   )

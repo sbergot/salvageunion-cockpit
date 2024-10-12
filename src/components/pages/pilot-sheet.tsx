@@ -15,11 +15,11 @@ import { Pilot, Ability } from "@/lib/game-types";
 
 export function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
   return (
-    <div className="flex gap-1 justify-between w-full">
-      <div className="uppercase text-vertical text-8xl text-sared-200">
+    <div className="flex flex-col md:flex-row gap-1 justify-between w-full">
+      <div className="uppercase md:[writing-mode:tb-rl] md:rotate-180 text-8xl text-sared-200">
         Pilot
       </div>
-      <Block className="grid grid-cols-2 gap-2">
+      <Block className="md:grid md:grid-cols-2 gap-2">
         <PilotField title="Callsign" value={pilotLens.state.callsign} />
         <PilotField
           title="Motto"
@@ -39,7 +39,7 @@ export function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
           usedLens={pilotLens.sub("background").sub("used")}
         />
       </Block>
-      <Block className="flex flex-col gap-1">
+      <Block className="flex md:flex-col justify-between gap-1">
         <PilotStat
           title="HP"
           valueLens={pilotLens.sub("hp").sub("value")}
@@ -60,7 +60,7 @@ export function PilotInventory({ inventoryLens }: { inventoryLens: ILens<string[
   return (
     <Block className="flex flex-col">
       <BlockLabel>Inventory</BlockLabel>
-      <BlockSection className="grid grid-cols-3 p-0 inventory-grid">
+      <BlockSection className="grid grid-cols-2 md:grid-cols-3 p-0 inventory-grid">
         {inventoryLens.state.map((_, i) => (
           <textarea
             key={i}
@@ -177,7 +177,7 @@ export function PilotAbilities({
   return (
     <Block className="flex flex-col">
       <BlockLabel>Abilities</BlockLabel>
-      <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4">
         {abilitiesLens.state.map((ability) => (
           <PilotAbility ability={ability} />
         ))}

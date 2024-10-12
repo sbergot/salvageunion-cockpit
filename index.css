@@ -5,15 +5,6 @@
   :root {
     --radius: 0.5rem
   }
-
-  .text-vertical {
-    writing-mode: tb-rl;
-    transform: rotate(-180deg);
-  }
-
-  .text-vertical2 {
-    writing-mode: tb-rl;
-  }
 }
 
 input[type='number'] {
@@ -25,29 +16,59 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-.inventory-grid > :nth-child(3n+1), .inventory-grid > :nth-child(3n+2) {
-  border-right: 2px dotted;
-  border-color: #9e4432;
+
+@media (max-width: 768px) {
+  .inventory-grid > :nth-child(2n+1), .inventory-grid > :nth-child(2n+2) {
+    border-right: 2px dotted;
+    border-color: #9e4432;
+  }
+
+  .inventory-grid > :not(:nth-last-child(-n+2)) {
+    border-bottom: 2px dotted;
+    border-color: #9e4432;
+  }
+
+  .inventory-grid > :nth-child(1) {
+    border-radius: 0.75rem 0 0 0;
+  }
+
+  .inventory-grid > :nth-child(2) {
+    border-radius: 0 0.75rem 0 0;
+  }
+
+  .inventory-grid > :nth-last-child(2) {
+    border-radius: 0 0 0 0.75rem;
+  }
+
+  .inventory-grid > :nth-last-child(1) {
+    border-radius: 0 0 0.75rem 0;
+  }
 }
 
+@media (min-width: 768px) {
+  .inventory-grid > :nth-child(3n+1), .inventory-grid > :nth-child(3n+2) {
+    border-right: 2px dotted;
+    border-color: #9e4432;
+  }
 
-.inventory-grid > :not(:nth-last-child(-n+3)) {
-  border-bottom: 2px dotted;
-  border-color: #9e4432;
-}
+  .inventory-grid > :not(:nth-last-child(-n+3)) {
+    border-bottom: 2px dotted;
+    border-color: #9e4432;
+  }
 
-.inventory-grid > :nth-child(1) {
-  border-radius: 0.75rem 0 0 0;
-}
+  .inventory-grid > :nth-child(1) {
+    border-radius: 0.75rem 0 0 0;
+  }
 
-.inventory-grid > :nth-child(3) {
-  border-radius: 0 0.75rem 0 0;
-}
+  .inventory-grid > :nth-child(3) {
+    border-radius: 0 0.75rem 0 0;
+  }
 
-.inventory-grid > :nth-last-child(3) {
-  border-radius: 0 0 0 0.75rem;
-}
+  .inventory-grid > :nth-last-child(3) {
+    border-radius: 0 0 0 0.75rem;
+  }
 
-.inventory-grid > :nth-last-child(1) {
-  border-radius: 0 0 0.75rem 0;
+  .inventory-grid > :nth-last-child(1) {
+    border-radius: 0 0 0.75rem 0;
+  }
 }
