@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { ILensBase } from "@/types";
 import React from "react";
 import { BlockLabel, BlockSection } from "../ui/block";
 import { Checkbox } from "../ui/checkbox";
+import { ILensBase } from "@/lib/lens/lens";
 
 export interface PilotFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   asChild?: boolean;

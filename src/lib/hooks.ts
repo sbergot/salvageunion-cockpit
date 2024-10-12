@@ -3,8 +3,7 @@ import { uuidv4 } from "./utils";
 import useLocalStorage from "use-local-storage";
 import { Draft, produce } from "immer";
 import { useImmer } from "use-immer";
-import { ILens, ILensBase } from "../types";
-import { makeLens } from "./lens";
+import { ILens, ILensBase, makeLens } from "./lens/lens";
 
 export function useBrowserId(): string {
   return useMemo(() => {

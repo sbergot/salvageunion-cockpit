@@ -3,9 +3,9 @@ import {
   PilotInventory,
   PilotAbilities,
 } from "@/components/pages/pilot-sheet";
+import { Pilot } from "@/lib/game-types";
 import { useImmerLocalStorage } from "@/lib/hooks";
 import { useParams } from "@/router";
-import { Pilot } from "@/types";
 
 export default function PilotSheet() {
   const { id } = useParams('/pilot/:id');

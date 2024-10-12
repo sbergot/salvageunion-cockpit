@@ -1,4 +1,3 @@
-import { ILens, Pilot, Ability, RollResult, RollTable } from "@/types";
 import { Block, BlockLabel, BlockSection } from "../ui/block";
 import { PilotField, PilotStat, PilotStatTp } from "./pilot-sheet-ui";
 import { Button } from "../ui/button";
@@ -10,7 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { roll } from "@/lib";
+import { ILens } from "@/lib/lens/lens";
+import { roll, RollResult, RollTable } from "@/lib/dices";
+import { Pilot, Ability } from "@/lib/game-types";
 
 export function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
   return (

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Children, ClassName } from "@/types";
 import { VariantProps, cva } from "class-variance-authority";
+import { Children, ClassName } from "../ui-types";
 
 export function Emph({ children, className }: Children & ClassName) {
   return <span className={cn(className, "italic")}>{children}</span>;

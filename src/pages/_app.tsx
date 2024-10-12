@@ -1,5 +1,5 @@
+import { Children } from "@/components/ui-types";
 import { Link } from "@/router";
-import { Children } from "@/types";
 import { Outlet } from 'react-router-dom'
 
 function Title({ children }: Children) {

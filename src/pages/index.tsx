@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { DeleteAlert } from "@/components/ui/delete-alert";
 import { FileImport } from "@/components/ui/file-import";
 import { StrongEmph } from "@/components/ui/typography";
-import { downloadJson, importPilot } from "@/lib";
+import { downloadJson } from "@/lib/download";
+import { Pilot } from "@/lib/game-types";
 import { useImmerLocalStorage } from "@/lib/hooks";
+import { importPilot } from "@/lib/pilot";
 import { Link } from "@/router";
-import { Pilot } from "@/types";
 import { PlayIcon, Trash2Icon, UploadIcon } from "lucide-react";
 
 export default function Index() {
