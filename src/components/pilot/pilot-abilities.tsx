@@ -1,6 +1,8 @@
 import { Block, BlockLabel, BlockSection } from "../ui/block";
-import { Button } from "../ui/button";
-import { DicesIcon, RulerIcon, TimerIcon } from "lucide-react";
+import { RulerIcon, TimerIcon } from "lucide-react";
+import { ILens } from "@/lib/lens";
+import { Ability, Pilot } from "@/lib/game-types";
+import { AbilityRoll } from "./roll-abilities";
 import { useState } from "react";
 import {
   Dialog,
@@ -8,70 +10,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { ILens } from "@/lib/lens";
-import { roll, RollResult, RollTable } from "@/lib/dices";
-import { Ability } from "@/lib/game-types";
+import { Button } from "../ui/button";
+import { getAvailableTrees } from "@/lib/ability-trees";
 
-const re = /(.*?): (.*)/;
-
-function Result({ result }: { result?: RollResult }) {
-  if (!result) {
-    return <div />;
-  }
-  const match = re.exec(result.text)!;
-  if (!match) {
-    return (
-      <div>
-        <div className="font-bold">Dice rolled: {result.value}</div>
-        <div>{result.text}</div>
-      </div>
-    );
-  }
-
-  const title = match[1];
-  const body = match[2];
-
-  return (
-    <div>
-      <div className="font-bold">
-        {result.value} - {title}
-      </div>
-      <div>{body}</div>
-    </div>
-  );
-}
-
-function AbilityRoll({
-  rollTable,
-  name,
-}: {
-  rollTable: RollTable;
-  name: string;
-}) {
+function AbilityLearn({ abilities, className }: { className: string, abilities: Ability[] }) {
   const [open, setOpen] = useState(false);
-  const [rollResult, setRollResult] = useState<RollResult | null>();
-  function rollAbility(open: boolean, table: RollTable) {
-    if (open) {
-      setRollResult(roll(table));
-    }
-    setOpen(open);
-  }
+  const availableTrees = getAvailableTrees(
+    className,
+    abilities
+  );
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(open) => {
-        rollAbility(open, rollTable);
-      }}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-neutral-100" size="fit">
-          <DicesIcon size="20" />
+          add ability
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>{name} ability roll result</DialogTitle>
-        <Result result={rollResult!} />
+        <DialogTitle>Available abilities</DialogTitle>
+        <div>
+          {availableTrees.map((a) => (
+            <Button>{a}</Button>
+          ))}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -109,12 +71,15 @@ function PilotAbility({ ability }: { ability: Ability }) {
 
 export function PilotAbilities({
   abilitiesLens,
+  className
 }: {
+  className: string,
   abilitiesLens: ILens<Ability[]>;
 }) {
   return (
     <Block className="flex flex-col">
       <BlockLabel>Abilities</BlockLabel>
+      <AbilityLearn className={className} abilities={abilitiesLens.state} />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4">
         {abilitiesLens.state.map((ability) => (
           <PilotAbility ability={ability} />

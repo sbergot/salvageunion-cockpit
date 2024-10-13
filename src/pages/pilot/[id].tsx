@@ -13,7 +13,7 @@ export default function PilotSheet() {
     <div className="flex flex-col gap-2">
       <PilotStats pilotLens={pilotLens} />
       <PilotInventory inventoryLens={pilotLens.sub("inventory")} />
-      <PilotAbilities abilitiesLens={pilotLens.sub("abilities")} />
+      <PilotAbilities abilitiesLens={pilotLens.sub("abilities")} className={pilotLens.state.class} />
     </div>
   );
 }
