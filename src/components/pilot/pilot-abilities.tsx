@@ -1,7 +1,7 @@
 import { Block, BlockLabel, BlockSection } from "../ui/block";
-import { RulerIcon, TimerIcon } from "lucide-react";
+import { MinusIcon, PencilIcon, PlusIcon, RulerIcon, TimerIcon, WrenchIcon } from "lucide-react";
 import { ILens } from "@/lib/lens";
-import { Ability, Pilot } from "@/lib/game-types";
+import { Ability } from "@/lib/game-types";
 import { AbilityRoll } from "./roll-abilities";
 import { useState } from "react";
 import {
@@ -11,27 +11,96 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { getAvailableTrees } from "@/lib/ability-trees";
+import { getAvailableTreeLevels, TreeLevel } from "@/lib/ability-trees";
+import { abilitiesByTree } from "@/lib/indexes";
+import { cn } from "@/lib/utils";
 
-function AbilityLearn({ abilities, className }: { className: string, abilities: Ability[] }) {
-  const [open, setOpen] = useState(false);
-  const availableTrees = getAvailableTrees(
-    className,
-    abilities
+function AbilityPreview({
+  ability,
+  owned,
+}: {
+  ability: Ability;
+  owned: boolean;
+}) {
+  return (
+    <Block className={cn("flex-col", !owned && "bg-sared-200/50")}>
+      <div className="font-bold">{ability.name}</div>
+      <div className="text-sm text-start">{ability.description}</div>
+    </Block>
   );
+}
+
+function SingleTreeDisplay({
+  tree,
+  abilitiesLens,
+}: {
+  tree: TreeLevel;
+  abilitiesLens: ILens<Ability[]>;
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-1">
+        <div>
+          {tree.name} ({tree.level})
+        </div>
+        <Button
+          disabled={tree.level === 0}
+          onClick={() => {
+            abilitiesLens.setState((abilities) => {
+              const toRemove = abilitiesByTree[tree.name][tree.level - 1];
+              const idx = abilities.findIndex(a =>  a.name === toRemove.name);
+              abilities.splice(idx, 1);
+            });
+          }}
+        >
+          <MinusIcon />
+        </Button>
+        <Button
+          disabled={tree.level === 3}
+          onClick={() => {
+            abilitiesLens.setState((a) => {
+              a.push(abilitiesByTree[tree.name][tree.level]);
+            });
+          }}
+        >
+          <PlusIcon />
+        </Button>
+      </div>
+      <div className="grid grid-cols-3 gap-1">
+        {abilitiesByTree[tree.name].map((ability) => (
+          <AbilityPreview
+            key={ability.name}
+            ability={ability}
+            owned={ability.level <= tree.level}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AbilityLearn({
+  abilitiesLens,
+  className,
+}: {
+  className: string;
+  abilitiesLens: ILens<Ability[]>;
+}) {
+  const [open, setOpen] = useState(false);
+  const availableTrees = getAvailableTreeLevels(className, abilitiesLens.state);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-neutral-100" size="fit">
-          add ability
+        <Button className="bg-neutral-100 px-1" size="fit">
+          <PencilIcon size={16} />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Available abilities</DialogTitle>
-        <div>
-          {availableTrees.map((a) => (
-            <Button>{a}</Button>
+        <div className="flex flex-col gap-2 max-h-[40rem] overflow-y-scroll">
+          {availableTrees.map((tree) => (
+            <SingleTreeDisplay key={tree.name} tree={tree} abilitiesLens={abilitiesLens} />
           ))}
         </div>
       </DialogContent>
@@ -41,6 +110,8 @@ function AbilityLearn({ abilities, className }: { className: string, abilities: 
 
 function PilotAbility({ ability }: { ability: Ability }) {
   const apCost = ability.apCost === "Variable" ? "X" : ability.apCost;
+  const isEquipment = ability.traits && ability.traits.findIndex(t => t.type === "pilot equipment") >= 0;
+  const isHacking = ability.traits && ability.traits.findIndex(t => t.type === "hacking") >= 0;
   return (
     <div className="flex flex-col gap-1" key={ability.name}>
       <BlockSection className="flex justify-between text-sm">
@@ -52,18 +123,24 @@ function PilotAbility({ ability }: { ability: Ability }) {
       <BlockSection className="text-sm flex-grow">
         {ability.effect}
       </BlockSection>
-      <div className="flex gap-1">
-        <BlockSection className="inline order-3 text-sm">
+      <div className="flex flex-wrap gap-1">
+        {apCost && <BlockSection className="inline text-xs">
           AP: {apCost}
-        </BlockSection>
+        </BlockSection>}
         {ability.range && (
-          <BlockSection className="flex order-2 text-sm">
+          <BlockSection className="flex text-xs">
             <RulerIcon size="20" /> <div>{ability.range}</div>
           </BlockSection>
         )}
-        <BlockSection className="flex order-1 text-sm">
+        {ability.actionType && <BlockSection className="flex text-xs">
           <TimerIcon size="20" /> <div>{ability.actionType}</div>
-        </BlockSection>
+        </BlockSection>}
+        {isEquipment && <BlockSection>
+          <WrenchIcon size="20" />
+        </BlockSection>}
+        {isHacking && <BlockSection className="text-xs">
+          Hacking
+        </BlockSection>}
       </div>
     </div>
   );
@@ -71,18 +148,20 @@ function PilotAbility({ ability }: { ability: Ability }) {
 
 export function PilotAbilities({
   abilitiesLens,
-  className
+  className,
 }: {
-  className: string,
+  className: string;
   abilitiesLens: ILens<Ability[]>;
 }) {
   return (
-    <Block className="flex flex-col">
+    <Block className="flex flex-col gap-2">
+      <div className="flex gap-1">
       <BlockLabel>Abilities</BlockLabel>
-      <AbilityLearn className={className} abilities={abilitiesLens.state} />
+      <AbilityLearn className={className} abilitiesLens={abilitiesLens} />
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4">
         {abilitiesLens.state.map((ability) => (
-          <PilotAbility ability={ability} />
+          <PilotAbility key={ability.name} ability={ability} />
         ))}
       </div>
     </Block>

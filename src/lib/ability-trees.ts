@@ -1,13 +1,11 @@
-import allAbilities from "@/data/abilities.json";
 import treeReqs from "@/data/ability-tree-requirements.json";
-import { toDictionary, toDictionaryList } from "./utils";
-import { abilitiesByName, classesByName } from "./indexes";
+import { classesByName } from "./indexes";
 import { Ability } from "./game-types";
 
-const abilitiesByTree = toDictionaryList(allAbilities, (a) => a.tree) as Record<
-  string,
-  Ability[]
->;
+export interface TreeLevel {
+  name: string;
+  level: number;
+}
 
 const nextTreeGraph: Record<string, string> = (function () {
   const result: Record<string, string> = {};
@@ -19,35 +17,35 @@ const nextTreeGraph: Record<string, string> = (function () {
   return result;
 })();
 
-function getTreeLevel(tree: string, abilities: Ability[]) {
-  return abilities
+function getTreeLevel(tree: string, abilities: Ability[]): TreeLevel {
+  const level = abilities
     .filter((a) => a.tree === tree)
     .map((a) => a.level)
     .reduce((prev, current) => Math.max(prev, current), 0);
+    return { name: tree, level };
 }
 
-export function getAvailableTrees(className: string, abilities: Ability[]) {
+export function getAvailableTreeLevels(className: string, abilities: Ability[]): TreeLevel[] {
     const coreTrees = classesByName[className].coreAbilities;
-    if (abilities.length < 6) { return coreTrees; }
+    const coreTreeLevels = coreTrees.map(t => getTreeLevel(t, abilities));
+    if (abilities.length < 6) { return coreTreeLevels; }
 
-    let advancedTrees: string[] = [];
-    coreTrees.forEach(tree => {
-        if (getTreeLevel(tree, abilities) === 3) {
-            advancedTrees.push(nextTreeGraph[tree]);
+    let advancedTrees: TreeLevel[] = [];
+    coreTreeLevels.forEach(tree => {
+        if (tree.level === 3) {
+            advancedTrees.push(getTreeLevel(nextTreeGraph[tree.name], abilities));
         }
     });
 
-    const advancedTreeLevels = advancedTrees.map(t => ({ tree: t, level: getTreeLevel(t, abilities)}));
-
-    const advancedLevel = advancedTreeLevels.map(t => t.level).reduce((p, c) => Math.max(p, c), 0);
+    const advancedLevel = advancedTrees.map(t => t.level).reduce((p, c) => Math.max(p, c), 0);
     if (advancedLevel > 0) {
-        advancedTrees = advancedTreeLevels.filter(t => t.level > 0).map(t => t.tree);
+        advancedTrees = advancedTrees.filter(t => t.level > 0);
     }
 
     if (advancedLevel < 3) {
-        return coreTrees.concat(advancedTrees);
+        return coreTreeLevels.concat(advancedTrees);
     }
 
-    const legendaryTree: string = nextTreeGraph[advancedTrees[0]];
-    return [...coreTrees, ...advancedTrees, legendaryTree];
+    const legendaryTree: TreeLevel = getTreeLevel(nextTreeGraph[advancedTrees[0].name], abilities);
+    return [...coreTreeLevels, ...advancedTrees, legendaryTree];
 }
