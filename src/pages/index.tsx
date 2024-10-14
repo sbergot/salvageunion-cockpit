@@ -7,14 +7,18 @@ import { Pilot } from "@/lib/game-types";
 import { useImmerLocalStorage } from "@/lib/hooks";
 import { importPilot } from "@/lib/pilot";
 import { Link } from "@/router";
-import { PlayIcon, Trash2Icon, UploadIcon } from "lucide-react";
+import { DicesIcon, PlayIcon, Trash2Icon, UploadIcon } from "lucide-react";
 
 export default function Index() {
   const pilotsLens = useImmerLocalStorage<Record<string, Pilot>>("pilots", {});
   return (
     <div className="flex flex-col gap-1">
+      <div className="flex gap-1">
+      <div className="text-lg">Standard tables roller:</div>
+      <Link to="/tables" ><Button><DicesIcon /></Button></Link>
+      </div>
       <div className="text-lg">
-        To create a pilot, please visite{" "}
+        To create a pilot, please visit{" "}
         <a href="https://www.salvageunionworkshop.com/pilot">
           https://www.salvageunionworkshop.com/pilot
         </a>
