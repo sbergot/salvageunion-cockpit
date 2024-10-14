@@ -5,6 +5,7 @@ import { Ability } from "./game-types";
 export interface TreeLevel {
   name: string;
   level: number;
+  legendary?: boolean;
 }
 
 const nextTreeGraph: Record<string, string> = (function () {
@@ -47,5 +48,6 @@ export function getAvailableTreeLevels(className: string, abilities: Ability[]):
     }
 
     const legendaryTree: TreeLevel = getTreeLevel(nextTreeGraph[advancedTrees[0].name], abilities);
+    legendaryTree.legendary = true;
     return [...coreTreeLevels, ...advancedTrees, legendaryTree];
 }

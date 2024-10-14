@@ -979,7 +979,7 @@
   {
     "name": "Stealth Field Generator",
     "tree": "Legendary Smuggler",
-    "level": 3,
+    "level": 1,
     "description": "This makes you and everything in Close range invisible indefinitely.",
     "effect": "You acquire and train in the use of a Stealth Field Generator that only you can use.",
     "apCost": 4,
@@ -1040,7 +1040,7 @@
   {
     "name": "Inspirational Union Leader",
     "tree": "Legendary Union Rep",
-    "level": 3,
+    "level": 1,
     "description": "Inspire your allies and refresh their HP, AP, and heal their minor injuries.",
     "effect": "You are a font of inspiration, courage, and stability for your Salvage Crew, in the face of the wasteland’s myriad dangers.",
     "actionType": "Turn",

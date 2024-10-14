@@ -1,5 +1,12 @@
 import { Block, BlockLabel, BlockSection } from "../ui/block";
-import { MinusIcon, PencilIcon, PlusIcon, RulerIcon, TimerIcon, WrenchIcon } from "lucide-react";
+import {
+  MinusIcon,
+  PencilIcon,
+  PlusIcon,
+  RulerIcon,
+  TimerIcon,
+  WrenchIcon,
+} from "lucide-react";
 import { ILens } from "@/lib/lens";
 import { Ability } from "@/lib/game-types";
 import { AbilityRoll } from "./roll-abilities";
@@ -30,6 +37,73 @@ function AbilityPreview({
   );
 }
 
+function LegendaryTreeDisplay({
+  tree,
+  abilitiesLens,
+}: {
+  tree: TreeLevel;
+  abilitiesLens: ILens<Ability[]>;
+}) {
+  const isLearned = tree.level === 1;
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-1">
+        <div>{tree.name}</div>
+        {isLearned ? (
+          <Button
+            disabled={tree.level === 0}
+            onClick={() => {
+              abilitiesLens.setState((abilities) => {
+                const toRemove = abilitiesLens.state.find(
+                  (a) => a.tree === tree.name
+                )!;
+                const idx = abilities.findIndex(
+                  (a) => a.name === toRemove.name
+                );
+                abilities.splice(idx, 1);
+              });
+            }}
+          >
+            unlearn
+          </Button>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                abilitiesLens.setState((a) => {
+                  a.push(abilitiesByTree[tree.name][0]);
+                });
+              }}
+            >
+              learn first
+            </Button>
+            <Button
+              onClick={() => {
+                abilitiesLens.setState((a) => {
+                  a.push(abilitiesByTree[tree.name][1]);
+                });
+              }}
+            >
+              learn second
+            </Button>
+          </>
+        )}
+      </div>
+      <div className="grid grid-cols-3 gap-1">
+        {abilitiesByTree[tree.name].map((ability) => (
+          <AbilityPreview
+            key={ability.name}
+            ability={ability}
+            owned={
+              abilitiesLens.state.findIndex((a) => a.name === ability.name) >= 0
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SingleTreeDisplay({
   tree,
   abilitiesLens,
@@ -48,7 +122,7 @@ function SingleTreeDisplay({
           onClick={() => {
             abilitiesLens.setState((abilities) => {
               const toRemove = abilitiesByTree[tree.name][tree.level - 1];
-              const idx = abilities.findIndex(a =>  a.name === toRemove.name);
+              const idx = abilities.findIndex((a) => a.name === toRemove.name);
               abilities.splice(idx, 1);
             });
           }}
@@ -99,9 +173,21 @@ function AbilityLearn({
       <DialogContent>
         <DialogTitle>Available abilities</DialogTitle>
         <div className="flex flex-col gap-2 max-h-[40rem] overflow-y-scroll">
-          {availableTrees.map((tree) => (
-            <SingleTreeDisplay key={tree.name} tree={tree} abilitiesLens={abilitiesLens} />
-          ))}
+          {availableTrees.map((tree) =>
+            tree.legendary ? (
+              <LegendaryTreeDisplay
+                key={tree.name}
+                tree={tree}
+                abilitiesLens={abilitiesLens}
+              />
+            ) : (
+              <SingleTreeDisplay
+                key={tree.name}
+                tree={tree}
+                abilitiesLens={abilitiesLens}
+              />
+            )
+          )}
         </div>
       </DialogContent>
     </Dialog>
@@ -110,8 +196,12 @@ function AbilityLearn({
 
 function PilotAbility({ ability }: { ability: Ability }) {
   const apCost = ability.apCost === "Variable" ? "X" : ability.apCost;
-  const isEquipment = ability.traits && ability.traits.findIndex(t => t.type === "pilot equipment") >= 0;
-  const isHacking = ability.traits && ability.traits.findIndex(t => t.type === "hacking") >= 0;
+  const isEquipment =
+    ability.traits &&
+    ability.traits.findIndex((t) => t.type === "pilot equipment") >= 0;
+  const isHacking =
+    ability.traits &&
+    ability.traits.findIndex((t) => t.type === "hacking") >= 0;
   return (
     <div className="flex flex-col gap-1" key={ability.name}>
       <BlockSection className="flex justify-between text-sm">
@@ -124,23 +214,25 @@ function PilotAbility({ ability }: { ability: Ability }) {
         {ability.effect}
       </BlockSection>
       <div className="flex flex-wrap gap-1">
-        {apCost && <BlockSection className="inline text-xs">
-          AP: {apCost}
-        </BlockSection>}
+        {apCost && (
+          <BlockSection className="inline text-xs">AP: {apCost}</BlockSection>
+        )}
         {ability.range && (
           <BlockSection className="flex text-xs">
             <RulerIcon size="20" /> <div>{ability.range}</div>
           </BlockSection>
         )}
-        {ability.actionType && <BlockSection className="flex text-xs">
-          <TimerIcon size="20" /> <div>{ability.actionType}</div>
-        </BlockSection>}
-        {isEquipment && <BlockSection>
-          <WrenchIcon size="20" />
-        </BlockSection>}
-        {isHacking && <BlockSection className="text-xs">
-          Hacking
-        </BlockSection>}
+        {ability.actionType && (
+          <BlockSection className="flex text-xs">
+            <TimerIcon size="20" /> <div>{ability.actionType}</div>
+          </BlockSection>
+        )}
+        {isEquipment && (
+          <BlockSection>
+            <WrenchIcon size="20" />
+          </BlockSection>
+        )}
+        {isHacking && <BlockSection className="text-xs">Hacking</BlockSection>}
       </div>
     </div>
   );
@@ -156,8 +248,8 @@ export function PilotAbilities({
   return (
     <Block className="flex flex-col gap-2">
       <div className="flex gap-1">
-      <BlockLabel>Abilities</BlockLabel>
-      <AbilityLearn className={className} abilitiesLens={abilitiesLens} />
+        <BlockLabel>Abilities</BlockLabel>
+        <AbilityLearn className={className} abilitiesLens={abilitiesLens} />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4">
         {abilitiesLens.state.map((ability) => (
