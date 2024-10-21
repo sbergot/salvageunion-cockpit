@@ -1,3 +1,5 @@
+import { RollTable } from "./dices";
+
 export interface WorkShopPilot {
   coreClassId: string;
   abilityIds: string[];
@@ -18,11 +20,16 @@ export interface Pilot {
   motto: PilotUsable;
   keepsake: PilotUsable;
   background: PilotUsable;
-  hp: { value: number; max: number };
-  ap: { value: number; max: number };
-  tp: { value: number };
+  hp: Gauge;
+  ap: Gauge;
+  tp: number;
   inventory: string[];
   abilities: Ability[];
+}
+
+export interface PilotUsable {
+  value: string;
+  used: boolean;
 }
 
 export type TreeType = "core" | "advanced" | "legendary";
@@ -39,12 +46,91 @@ export interface Ability {
   level: number;
   description: string;
   effect: string;
-  apCost: number | "Variable";
+  activationCost: Cost;
   range?: Range;
   actionType?: ActionType;
   traits: Trait[];
   rollTable?: RollTable;
 }
+
+export interface WorkshopMeck {
+  name: string;
+  appearance: string;
+  quirk: string;
+  customPatternName: string;
+  installedSystems: Array<{ name: string; systemOrModule: 0 | 1 }>;
+}
+
+export interface Mech {
+  chassis: string;
+  pattern: string;
+  sp: Gauge;
+  ep: Gauge;
+  heat: Gauge;
+  systemSlots: number;
+  moduleSlots: number;
+  cargoCap: number;
+  techLevel: number;
+  salvageValue: number;
+  chassisAbility: string;
+  quirk: string;
+  appearance: string;
+  systems: System[];
+  modules: Module[];
+  cargo: string[];
+}
+
+export interface ModuleOrSystem {
+  name: string;
+  techLevel: number;
+  slotsRequired: number;
+  salvageValue: number;
+  recommended: boolean;
+  traits: Trait[];
+  description: string;
+  notes: string;
+  activationCost: Cost;
+  damage: Damage;
+  range?: Range;
+  actionType?: ActionType;
+  rollTable?: RollTable;
+  actions: Action[];
+}
+
+export interface System extends ModuleOrSystem {
+  type: "system";
+}
+
+export interface Module extends ModuleOrSystem {
+  type: "module";
+}
+
+export interface Action {
+  name: string;
+  description: string;
+  effect: string;
+  activationCost: Cost;
+  range: Range;
+  actionType: ActionType;
+  traits: Trait[];
+  damage: Damage;
+  options: string[];
+  rollTable?: RollTable;
+}
+
+export type Damage =
+  | {
+      type: "HP" | "SP";
+      amount: number;
+    }
+  | { type: "special"; amount: "2d20" | "X SP" };
+
+export interface Gauge {
+  value: number;
+  max: number;
+}
+
+export type Cost = number | "Variable";
 
 export type Range = "Close" | "Medium" | "Long" | "Far" | "Close/Long";
 
@@ -110,8 +196,3 @@ export type Trait =
   | { type: "hot"; amount: number }
   | { type: "multi-attack"; amount: number }
   | { type: "personnel capacity"; amount: number };
-
-export interface PilotUsable {
-  value: string;
-  used: boolean;
-}

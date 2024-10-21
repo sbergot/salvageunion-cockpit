@@ -42,7 +42,7 @@ export function PilotStats({ pilotLens }: { pilotLens: ILens<Pilot> }) {
           valueLens={pilotLens.sub("ap").sub("value")}
           max={pilotLens.state.ap.max}
         />
-        <PilotStatTp title="TP" valueLens={pilotLens.sub("tp").sub("value")} />
+        <PilotStatTp title="TP" valueLens={pilotLens.sub("tp")} />
       </Block>
     </div>
   );

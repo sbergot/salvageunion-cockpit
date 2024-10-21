@@ -195,7 +195,7 @@ function AbilityLearn({
 }
 
 function PilotAbility({ ability }: { ability: Ability }) {
-  const apCost = ability.apCost === "Variable" ? "X" : ability.apCost;
+  const activationCost = ability.activationCost === "Variable" ? "X" : ability.activationCost;
   const isEquipment =
     ability.traits &&
     ability.traits.findIndex((t) => t.type === "pilot equipment") >= 0;
@@ -214,8 +214,8 @@ function PilotAbility({ ability }: { ability: Ability }) {
         {ability.effect}
       </BlockSection>
       <div className="flex flex-wrap gap-1">
-        {apCost && (
-          <BlockSection className="inline text-xs">AP: {apCost}</BlockSection>
+        {activationCost && (
+          <BlockSection className="inline text-xs">AP: {activationCost}</BlockSection>
         )}
         {ability.range && (
           <BlockSection className="flex text-xs">

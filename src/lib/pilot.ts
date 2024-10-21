@@ -13,7 +13,7 @@ export function newPilot(): Pilot {
     background: { value: "back", used: false },
     hp: { value: 0, max: 6 },
     ap: { value: 0, max: 6 },
-    tp: { value: 0 },
+    tp: 0,
     inventory: ["", "", "", "", "", ""],
     abilities: [],
   };
@@ -40,7 +40,7 @@ export function importPilot(json: string): Pilot {
     background: { value: workshopPilot.background, used: false },
     hp: { value: 6, max: 6 },
     ap: { value: 6, max: 6 },
-    tp: { value: workshopPilot.trainingPoints },
+    tp: workshopPilot.trainingPoints,
     inventory: gears,
     abilities: abilities,
   };
